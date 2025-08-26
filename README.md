@@ -1,5 +1,3 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
-
 # Instagram Lead Generator
 
 A powerful Instagram lead generation tool that scrapes user data by hashtags/niches using dual scraping methods (Apify + Playwright) with MongoDB storage and JSON export capabilities.
@@ -327,42 +325,6 @@ This tool is for educational and research purposes. Users are responsible for co
 
 ***
 
-**Built with ❤️ by [Your Name]**
+**Built with ❤️ by Dhruv**
 
-For questions or support, please open an issue on GitHub or contact [your-email@example.com].
-<span style="display:none">[^1][^10][^11][^12][^13][^14][^15][^16][^2][^3][^4][^5][^6][^7][^8][^9]</span>
-
-<div style="text-align: center">⁂</div>
-
-[^1]: monitoring.py
-
-[^2]: profile_model.py
-
-[^3]: user_model.py
-
-[^4]: export.py
-
-[^5]: monitoring.py
-
-[^6]: scraper.py
-
-[^7]: database.py
-
-[^8]: json_export.py
-
-[^9]: json_uploader.py
-
-[^10]: proxy_manager.py
-
-[^11]: session_manager.py
-
-[^12]: helpers.py
-
-[^13]: main.py
-
-[^14]: logs.txt
-
-[^15]: Screenshot-2025-08-08-174316.jpg
-
-[^16]: file.env
-
+For questions or support, please open an issue on GitHub or contact [vakhariadhruv526@gmail.com].
