@@ -7,7 +7,7 @@ import re
 from datetime import datetime
 import logging
 
-class PlaywrightScraper:
+class InstagramPlaywrightScraper:
     def __init__(self):
         self.playwright = None
         self.browser = None
@@ -506,3 +506,6 @@ class PlaywrightScraper:
                 hashtag_count[hashtag] = hashtag_count.get(hashtag, 0) + 1
         # Return top 10 most used hashtags
         return sorted(hashtag_count.keys(), key=hashtag_count.get, reverse=True)[:10]
+
+# Global instance
+instagram_scraper = InstagramPlaywrightScraper()

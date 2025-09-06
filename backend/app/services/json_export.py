@@ -77,6 +77,43 @@ class JsonExportService:
         except Exception as e:
             print(f"❌ Error exporting profiles: {str(e)}")
             raise
+    
+    def export_jobs(self, jobs: List[Dict], search_query: str) -> str:
+        """Export jobs to JSON file and return file path"""
+        try:
+            # Create directory if it doesn't exist
+            export_dir = os.path.join(self.export_base_path, "exported_jobs")
+            os.makedirs(export_dir, exist_ok=True)
+
+            # Create filename with timestamp
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            filename = f"{search_query}_jobs_{timestamp}.json"
+            filepath = os.path.join(export_dir, filename)
+
+            # Prepare export data with metadata
+            export_data = {
+                "metadata": {
+                    "search_query": search_query,
+                    "total_jobs": len(jobs),
+                    "exported_at": datetime.now().isoformat(),
+                    "export_type": "freelance_jobs",
+                    "remote_jobs": sum(1 for job in jobs if job.get('is_remote_friendly')),
+                    "contract_jobs": sum(1 for job in jobs if job.get('is_contract_work')),
+                    "platforms": list(set(job.get('platform', 'unknown') for job in jobs))
+                },
+                "jobs": self._serialize_data(jobs)
+            }
+
+            # Write to file
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(export_data, f, indent=4, ensure_ascii=False)
+
+            print(f"✅ Exported {len(jobs)} jobs to {filepath}")
+            return filepath
+
+        except Exception as e:
+            print(f"❌ Error exporting jobs: {str(e)}")
+            raise
 
     def _serialize_data(self, data: List[Dict]) -> List[Dict]:
         """Serialize data for JSON export, handling special types"""

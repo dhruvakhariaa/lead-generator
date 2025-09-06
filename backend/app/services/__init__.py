@@ -1,5 +1,7 @@
-from .apify_scraper import ApifyScraper
-from .playwright_scraper import PlaywrightScraper
-from .database import db_service
+# app/services/__init__.py
+# Keep this file empty or with minimal imports to prevent circular dependencies
+# Services should be imported directly where needed via ServiceFactory
 
-__all__ = ["ApifyScraper", "PlaywrightScraper", "db_service"]
+from app.services.service_factory import ServiceFactory
+
+__all__ = ['ServiceFactory']
