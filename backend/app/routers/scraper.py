@@ -107,6 +107,14 @@ async def scrape_users(
         print(f"❌ Unexpected error in scraper endpoint: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Scraping failed: {str(e)}")
 
+@router.get("/users/niche/{niche}")
+async def get_users_by_niche(niche: str):
+    """Get users by niche from database"""
+    users = await db_service.get_users_by_niche(niche)
+    if not users:
+        raise HTTPException(status_code=404, detail="No users found for this niche")
+    return users
+
 @router.get("/services/status")
 async def get_service_status():
     """Get status of available scraping services"""

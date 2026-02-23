@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0  # Use a stable MongoDB version
+    container_name: instagram-mongodb
+    restart: always
+    ports:
+      - "27017:27017"  # Expose MongoDB port for local access (e.g., via Compass)
+    volumes:
+      - mongodb-data:/data/db  # Persist database data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root  # Optional: Set admin credentials
+      - MONGO_INITDB_ROOT_PASSWORD=example  # Change in production
+      - MONGO_INITDB_DATABASE=instagram_leads
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend  # Build from backend directory
+      dockerfile: Dockerfile  # Assumes you have a Dockerfile in backend/
+    container_name: instagram-backend
+    restart: always
+    ports:
+      - "8000:8000"  # Expose FastAPI port
+    volumes:
+      - ./backend:/app  # Mount backend code for hot-reloading
+      - ./data:/data  # Mount data folder for JSON exports
+    environment:
+      - PYTHONUNBUFFERED=1  # For real-time logs
+      - MONGODB_URL=mongodb://mongodb:27017  # Connect to MongoDB service
+    depends_on:
+      mongodb:
+        condition: service_healthy  # Wait for MongoDB to be ready
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload  # Dev mode with reload
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend  # Build from frontend directory
+      dockerfile: Dockerfile  # Assumes you have a Dockerfile in frontend/
+    container_name: instagram-frontend
+    restart: always
+    ports:
+      - "3000:3000"  # Expose Next.js port
+    volumes:
+      - ./frontend:/app  # Mount frontend code for hot-reloading
+      - /app/node_modules  # Persist node_modules
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_BASE_URL=http://backend:8000/api  # Connect to backend service
+    depends_on:
+      - backend  # Wait for backend to start
+    command: npm run dev
+    networks:
+      - app-network
+
+volumes:
+  mongodb-data:  # Persistent volume for MongoDB data
+
+networks:
+  app-network:  # Shared network for inter-service communication
+    driver: bridge

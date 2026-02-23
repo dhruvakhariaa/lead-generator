@@ -33,8 +33,8 @@ class InstagramUser(BaseModel):
     
     model_config = {
         "arbitrary_types_allowed": True,
-        "json_encoders": {ObjectId: str},
-        "populate_by_name": True,
+        "json_encoders": {ObjectId: str},  # Add this line
+        "populate_by_name": True
     }
 
 class UserSearchRequest(BaseModel):

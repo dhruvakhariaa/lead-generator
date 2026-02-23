@@ -31,10 +31,13 @@ class DatabaseService:
         return self.db is not None
     
     async def get_users_by_niche(self, niche: str) -> list[dict]:
-        if self.users_collection is None:
-            raise ValueError("Database not connected. Call connect() first.")
+        """Get users by niche with proper ObjectId conversion"""
         cursor = self.users_collection.find({"niche": niche})
-        return await cursor.to_list(length=None)
+        users = await cursor.to_list(length=None)
+        # Convert ObjectIds to strings
+        for user in users:
+            user['_id'] = str(user['_id'])
+            return users
 
     async def get_all_profiles(self) -> list[dict]:
         if self.profiles_collection is None:

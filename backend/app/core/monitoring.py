@@ -21,8 +21,8 @@ async def send_alert(message: str):
     print(f"[ALERT] {datetime.now().isoformat()}: {message}")
 
 @router.get("/")
-async def get_metrics() -> Dict:
-    """Endpoint to fetch scraping metrics."""
+async def get_metrics():
+    from app.core.monitoring import _metrics
     return _metrics
 
 def record_run(yield_count: int, error: Optional[str] = None):

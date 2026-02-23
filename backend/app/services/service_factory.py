@@ -3,7 +3,7 @@ from typing import Optional, Dict, Any
 import logging
 from app.utils.config import settings
 from app.services.interfaces import InstagramScrapingService, JobScrapingService
-from app.services.proxy_manager import proxy_manager, NullProxyManager
+from app.services.proxy_manager import proxy_manager, AdvancedProxyManager
 from app.services.session_manager import session_manager
 
 logger = logging.getLogger(__name__)
